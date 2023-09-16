@@ -35,5 +35,15 @@ License Plate will be detected on a a Demo video and will be shown as an output 
 
 ## Demo Video
 
+
+
+https://github.com/Mochoye/Licence-Plate-Detection-using-TensorFlow-Lite/assets/95351969/68faabe0-aaef-475f-b6ca-8e9a0bcac295
+
+
+
+
+
+
+
 ## 
 I hope this code meets your expectations. If you have any questions or feedback, please let me know. 😊
