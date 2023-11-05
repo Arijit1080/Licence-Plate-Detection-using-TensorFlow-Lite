@@ -18,6 +18,9 @@ cap = cv2.VideoCapture('demo.mp4')
 
 reader = easyocr.Reader(['en'], gpu=False)
 
+fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Choose the appropriate codec
+output_video = cv2.VideoWriter('annotated_video.avi', fourcc, 30.0, (1114, 720)) 
+
 
 interpreter = Interpreter(model_path=modelpath)
 interpreter.allocate_tensors()
@@ -38,6 +41,11 @@ while(True):
     ret, frame =cap.read()
     image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     imH, imW, _ = frame.shape
+
+    print(imH, imW)
+    #output_video = cv2.VideoWriter('annotated_video.avi', fourcc, 30.0, (imW, imH))
+    
+    
     image_resized = cv2.resize(image_rgb, (width, height))
     input_data = np.expand_dims(image_resized, axis=0)
     # Normalize pixel values if using a floating model (i.e. if model is non-quantized)
@@ -75,7 +83,7 @@ while(True):
             #label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
             cv2.rectangle(frame, (xmin,ymin-20), (xmax,ymin), (10, 255, 0), cv2.FILLED)
             #cv2.rectangle(frame, xmin, ymax, (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
-            print(label)
+            
             if label:
                 label = label[0][1]
             else:
@@ -83,9 +91,10 @@ while(True):
             cv2.putText(frame, label, (xmin, ymin-2), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
             detections.append([object_name, scores[i], xmin, ymin, xmax, ymax])
     
+    output_video.write(frame)
     
     
-    cv2.imshow('output',frame)
+    #cv2.imshow('output',frame)
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
     
